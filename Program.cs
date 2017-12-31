@@ -34,21 +34,22 @@ namespace XmasTree
         private static List<Snowflake> _snowflakes;
         private static List<Tree> _tree;
 
-        private static readonly char[] _symbols = {'~', '+', '^', '.', 'o'};
+        private static readonly char[] Symbols = {'~', '+', '^', '.', 'o'};
 
-        private static readonly ConsoleColor[] _colors =
+        private static readonly ConsoleColor[] Colors =
             {ConsoleColor.Blue, ConsoleColor.Red, ConsoleColor.Cyan, ConsoleColor.Yellow, ConsoleColor.Green};
 
-        private static string label = "Xmas Tree 2018";
-        private static string author = "@emilg1101";
-        
-        private static int _windowWidth;
-        private static int _windowHeight;
-        
+        private const string Label = "Xmas Tree 2018";
+        private const string Author = "@emilg1101";
+
+        private const int WindowWidth = 80;
+        private const int WindowHeight = 24;
+
         public static void Main(string[] args)
         {
-            _windowWidth = Console.WindowWidth;
-            _windowHeight = Console.WindowHeight;
+            Console.CursorVisible = false;
+            Console.Title = "Xmas Tree";
+            Console.SetWindowSize(WindowWidth, WindowHeight);
             
             _random = new Random();
             _snowflakes = new List<Snowflake>();
@@ -62,9 +63,6 @@ namespace XmasTree
                 _snowflakes.Add(NewSnowflake(false));
             }
 
-            Console.CursorVisible = false;
-            Console.Title = "Xmas Tree";
-            
             while (true)
             {
                 SnowFalling();
@@ -75,11 +73,11 @@ namespace XmasTree
 
         public static void CreateTree()
         {
-            int offset = 5;
-            int endOfTree = offset + 21;
-            for (int i = 21; i >= 17; i--)
+            var offset = 5;
+            var endOfTree = offset + 21;
+            for (var i = 21; i >= 17; i--)
             {
-                for (int j = offset; j < endOfTree; j++)
+                for (var j = offset; j < endOfTree; j++)
                 {
                     _tree.Add(new Tree(j, i));
                 }
@@ -90,9 +88,9 @@ namespace XmasTree
             offset = 8;
             endOfTree = offset + 15;
             
-            for (int i = 16; i >= 12; i--)
+            for (var i = 16; i >= 12; i--)
             {
-                for (int j = offset; j < endOfTree; j++)
+                for (var j = offset; j < endOfTree; j++)
                 {
                     _tree.Add(new Tree(j, i));
                 }
@@ -105,7 +103,7 @@ namespace XmasTree
             
             for (int i = 11; i >= 6; i--)
             {
-                for (int j = offset; j < endOfTree; j++)
+                for (var j = offset; j < endOfTree; j++)
                 {
                     _tree.Add(new Tree(j, i));
                 }
@@ -120,8 +118,8 @@ namespace XmasTree
             {
                 if (_random.Next(-1, 2) == 0)
                 {
-                    char symbol = _symbols[_random.Next(0, _symbols.Length)];
-                    ConsoleColor color = _colors[_random.Next(0, _colors.Length)];
+                    var symbol = Symbols[_random.Next(0, Symbols.Length)];
+                    var color = Colors[_random.Next(0, Colors.Length)];
                     Print(tree.X, tree.Y, symbol, color);
                 }
                 else
@@ -129,8 +127,8 @@ namespace XmasTree
                     Print(tree.X, tree.Y, 'o', ConsoleColor.Green);
                 }
             }
-            Print(_windowWidth-label.Length, 0, label, ConsoleColor.Yellow);
-            Print(_windowWidth-author.Length, 1, author, ConsoleColor.Cyan);
+            Print(WindowWidth-Label.Length, 0, Label, ConsoleColor.Yellow);
+            Print(WindowWidth-Author.Length, 1, Author, ConsoleColor.Cyan);
             Print(15, 5, "|", ConsoleColor.Red);
             Print(14, 6, "\\|/", ConsoleColor.Red);
             Print(13, 7, "__*__", ConsoleColor.Red);
@@ -140,8 +138,8 @@ namespace XmasTree
 
         public static Snowflake NewSnowflake(bool isNewSnowflake)
         {
-            int x = _random.Next(1, _windowWidth - 2);
-            int y = _random.Next(1, _windowHeight - 2);
+            var x = _random.Next(1, WindowWidth - 2);
+            var y = _random.Next(1, WindowHeight - 2);
             return new Snowflake(x, isNewSnowflake ? 0 : y);
         }
 
@@ -149,16 +147,16 @@ namespace XmasTree
         {
             for (var i = 0; i < _snowflakes.Count; i++)
             {
-                Snowflake snowflake = _snowflakes[i];
-                if (snowflake.X >= 0 && snowflake.X <= _windowWidth - 1)
+                var snowflake = _snowflakes[i];
+                if (snowflake.X >= 0 && snowflake.X <= WindowWidth - 1)
                 {
                     Print(snowflake.X, snowflake.Y, '\u0020', ConsoleColor.White);
                 }
                 
-                int offset = _random.Next(-1, 3);
+                var offset = _random.Next(-1, 3);
                 if (offset == 0) snowflake.X--;
                 if (offset == 2) snowflake.X++;
-                if (snowflake.Y < _windowHeight - 2)
+                if (snowflake.Y < WindowHeight - 2)
                 {
                     snowflake.Y++;
                 }
@@ -168,7 +166,7 @@ namespace XmasTree
                     _snowflakes.Add(NewSnowflake(true));
                     continue;
                 }
-                if (snowflake.X >= 0 && snowflake.X <= _windowWidth - 1)
+                if (snowflake.X >= 0 && snowflake.X <= WindowWidth - 1)
                 {
                     Print(snowflake.X, snowflake.Y, '*', ConsoleColor.White);
                 }
